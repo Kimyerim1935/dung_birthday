@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🐰 둥이의 생일파티 : 뭉이의 비밀 초대장 🌸</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Swiper carousel -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
+  <!-- Canvas Confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <!-- Google Fonts: Gaegu (손글씨) & Noto Sans KR & Single Day -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Noto+Sans+KR:wght@300;400;600;700;900&family=Single+Day&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Noto Sans KR"', 'sans-serif'],
+            cute: ['"Single Day"', 'cursive'],
+            hand: ['"Gaegu"', 'cursive'],
+          },
+          colors: {
+            jelly: {
+              cream: '#fff9f4',
+              beige: '#f6ede4',
+              caramel: '#b08968',
+              brown: '#7f5539',
+              pink: '#ffccd5',
+              softpink: '#ffe5ec',
+              rose: '#fb6f92',
+              peach: '#ffe5d9',
+              lavender: '#e8dff5',
+            }
+          },
+          boxShadow: {
+            'plush': '0 12px 35px -8px rgba(251, 111, 146, 0.22), 0 4px 12px rgba(127, 85, 57, 0.08)',
+            'bunny': '0 8px 30px rgba(255, 204, 213, 0.45)',
+          },
+          animation: {
+            'bounce-soft': 'bounceSoft 2.5s infinite ease-in-out',
+            'float-ear': 'floatEar 3s infinite ease-in-out alternate',
+            'pulse-warm': 'pulseWarm 2s infinite',
+            'wiggle': 'wiggle 1.2s ease-in-out infinite',
+          },
+          keyframes: {
+            bounceSoft: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-6px)' }
+            },
+            floatEar: {
+              '0%': { transform: 'rotate(-4deg)' },
+              '100%': { transform: 'rotate(4deg)' }
+            },
+            pulseWarm: {
+              '0%, 100%': { opacity: '0.9', transform: 'scale(1)' },
+              '50%': { opacity: '1', transform: 'scale(1.03)' }
+            },
+            wiggle: {
+              '0%, 100%': { transform: 'rotate(-3deg)' },
+              '50%': { transform: 'rotate(3deg)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    /* 보들보들 젤리캣 모티브 텍스처 & 블러 글래스 */
+    .jelly-glass {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 2px solid rgba(255, 204, 213, 0.6);
+    }
+    .jelly-glass-dark {
+      background: rgba(127, 85, 57, 0.07);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1.5px solid rgba(176, 137, 104, 0.25);
+    }
+    /* 귀여운 체크무늬 배경 */
+    .gingham-bg {
+      background-color: #fff9f4;
+      background-image: 
+        linear-gradient(90deg, rgba(255, 204, 213, 0.25) 50%, transparent 50%),
+        linear-gradient(rgba(255, 204, 213, 0.25) 50%, transparent 50%);
+      background-size: 32px 32px;
+    }
+    /* 귀여운 토끼 귀 SVG 스타일 */
+    .bunny-ear-left {
+      transform-origin: bottom right;
+      animation: floatEar 2.8s ease-in-out infinite alternate;
+    }
+    .bunny-ear-right {
+      transform-origin: bottom left;
+      animation: floatEar 2.8s ease-in-out infinite alternate-reverse;
+    }
+    /* Hide scrollbar */
+    body::-webkit-scrollbar {
+      display: none;
+    }
+    body {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .party-gallery {
+      --swiper-theme-color: #fb6f92;
+      --swiper-navigation-size: 13px;
+      width: 100%;
+      min-width: 0;
+      border-radius: 12px;
+      background: #fff9f4;
+    }
+    .party-gallery .swiper-slide {
+      height: auto;
+      aspect-ratio: 4 / 5;
+    }
+    .party-gallery img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .party-gallery .swiper-button-prev,
+    .party-gallery .swiper-button-next {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 2px 8px rgba(127, 85, 57, 0.12);
+    }
+    .party-gallery .swiper-pagination {
+      width: auto;
+      left: 50%;
+      bottom: 10px;
+      transform: translateX(-50%);
+      padding: 3px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.9);
+      color: #7f5539;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body class="gingham-bg text-[#5c4033] min-h-screen flex justify-center selection:bg-pink-300 selection:text-white relative overflow-x-hidden">
+
+  <!-- 감성 은은한 파스텔 배경 조명 효과 -->
+  <div class="fixed -top-16 -left-16 w-80 h-80 rounded-full bg-pink-200/50 blur-[90px] pointer-events-none"></div>
+  <div class="fixed top-1/2 -right-20 w-88 h-88 rounded-full bg-amber-100/60 blur-[100px] pointer-events-none"></div>
+  <div class="fixed -bottom-16 left-1/3 w-80 h-80 rounded-full bg-purple-100/50 blur-[90px] pointer-events-none"></div>
+
+  <!-- 메인 모바일 래퍼 -->
+  <div class="w-full max-w-md min-h-screen flex flex-col justify-between p-4 sm:p-5 relative z-10">
+
+    <!-- 상단 젤리캣 토끼 인트로 태그 -->
+    <header class="text-center pt-3 pb-2">
+      <div class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-white/90 border-2 border-pink-300 shadow-sm text-xs font-bold text-rose-500 animate-bounce-soft">
+        <span>🐰</span>
+        <span class="tracking-wide">둥이 취향저격! 젤리캣 토끼 파티</span>
+        <span>🌸</span>
+      </div>
+      <p class="text-[11px] font-hand text-stone-500 mt-1 tracking-widest text-sm">
+        THE 2ND BIRTHDAY PARTY FOR YE-JJIN
+      </p>
+    </header>
+
+    <!-- 메인 비주얼 & 동영상 플레이어 카드 -->
+    <main class="space-y-4 my-auto py-2">
+      
+      <!-- 비디오 & 폴라로이드 카드 -->
+      <div class="jelly-glass rounded-3xl p-4 sm:p-5 shadow-plush relative">
+        
+        <!-- 토끼 귀 데코레이션 (상단 거치) -->
+        <div class="absolute -top-10 left-1/2 -translate-x-1/2 flex gap-4 select-none pointer-events-none z-20">
+          <svg class="bunny-ear-left w-9 h-14" viewBox="0 0 40 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 0C8.9543 0 0 15.67 0 35C0 54.33 8.9543 70 20 70C31.0457 70 40 54.33 40 35C40 15.67 31.0457 0 20 0Z" fill="#FFF9F4" stroke="#F6C5D0" stroke-width="3"/>
+            <path d="M20 12C13 12 8 22 8 36C8 50 13 60 20 60C27 60 32 50 32 36C32 22 27 12 20 12Z" fill="#FFCCD5"/>
+          </svg>
+          <svg class="bunny-ear-right w-9 h-14" viewBox="0 0 40 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 0C8.9543 0 0 15.67 0 35C0 54.33 8.9543 70 20 70C31.0457 70 40 54.33 40 35C40 15.67 31.0457 0 20 0Z" fill="#FFF9F4" stroke="#F6C5D0" stroke-width="3"/>
+            <path d="M20 12C13 12 8 22 8 36C8 50 13 60 20 60C27 60 32 50 32 36C32 22 27 12 20 12Z" fill="#FFCCD5"/>
+          </svg>
+        </div>
+
+        <!-- 타이틀 헤더 -->
+        <div class="text-center mt-3 mb-3">
+          <span class="inline-block text-xs font-bold text-amber-700 bg-amber-100/80 px-2.5 py-0.5 rounded-full mb-1">
+            PART 2 • 지상 최대의 축제 연장전
+          </span>
+          <h1 class="font-cute text-3xl sm:text-4xl text-[#7f5539] tracking-tight leading-tight">
+            둥이 생일파티 <span class="text-rose-500">2부작</span> 🎂
+          </h1>
+          <p class="text-xs font-hand text-stone-600 mt-0.5 text-base">
+            "둥이가 사랑하는 보들보들 뭉이도 함께 축하해요!"
+          </p>
+        </div>
+
+        <!-- 비디오 플레이어 컨테이너 (폴라로이드 스타일 프레임) -->
+        <div class="relative bg-white p-2.5 pb-4 rounded-2xl shadow-inner border border-pink-200">
+          
+          <div class="relative rounded-xl overflow-hidden aspect-[4/3] bg-stone-900 group">
+            <!-- HTML5 Video Player (Autoplay loop muted for browser safety) -->
+            <video id="partyVideo" 
+                   class="w-full h-full object-cover" 
+                   playsinline 
+                   autoplay 
+                   preload="auto"
+                   loop 
+                   muted 
+                   poster="https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=700&q=80">
+              <!-- 기본 제공 몽글몽글 촛불/파티 감성 비디오 샘플 (원하는 영상으로 버튼 눌러 언제든 변경 가능) -->
+              <source src="./img/Can%20you%20pause%20at%20the%20best%20moment%20%F0%9F%90%B0%F0%9F%92%99%23jellycat%20%23sharingjoy.mp4" type="video/mp4">
+              브라우저가 비디오 태그를 지원하지 않습니다.
+            </video>
+
+            <!-- 동영상 위 귀여운 오버레이 젤리캣 토끼 뱃지 -->
+            <div class="absolute top-2.5 left-2.5 flex items-center gap-1.5 bg-white/80 backdrop-blur-md px-2.5 py-1 rounded-full text-[11px] font-bold text-stone-700 shadow-sm border border-white">
+              <span class="animate-pulse">🔴</span> LIVE 젤리캣 홈
+            </div>
+
+            <!-- 비디오 컨트롤 오버레이 (재생/일시정지 & 음소거 토글) -->
+            <div class="absolute bottom-2.5 right-2.5 flex items-center gap-1.5">
+              <button onclick="toggleAudio()" id="audioToggleBtn" class="bg-black/50 hover:bg-black/70 backdrop-blur-md text-white text-xs px-2.5 py-1.5 rounded-lg flex items-center gap-1 transition active:scale-95">
+                <span id="audioIcon">🔇</span>
+                <span id="audioText" class="text-[10px]">소리 켜기</span>
+              </button>
+              <button onclick="toggleVideoPlay()" id="playToggleBtn" class="bg-black/50 hover:bg-black/70 backdrop-blur-md text-white text-xs p-1.5 rounded-lg transition active:scale-95">
+                <span id="playIcon">⏸️</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 폴라로이드 감성 캡션 & 영상 직접 바꾸기 버튼 -->
+          <div class="mt-2.5 flex items-center justify-between px-1">
+            <div class="flex items-center gap-1.5">
+              <span class="text-xl">🧸</span>
+              <p class="font-hand text-base text-stone-700 font-bold">
+                사랑받는 둥이 & 예찌니의 소중한 순간
+              </p>
+            </div>
+            
+            <!-- 내 폰에 있는 진짜 영상 넣기 파일 인풋 -->
+            <label class="cursor-pointer text-[10px] bg-pink-100 hover:bg-pink-200 text-rose-600 font-bold px-2 py-1 rounded-lg border border-pink-200 transition active:scale-95 flex items-center gap-1">
+              <span>🎞️</span> 내 영상 넣기
+              <input type="file" id="videoFileInput" accept="video/*" class="hidden" onchange="handleUserVideoUpload(event)">
+            </label>
+          </div>
+        </div>
+
+        <!-- img 폴더의 전체 사진 갤러리 -->
+        <section class="mt-4 bg-white p-2.5 rounded-2xl border border-pink-200" aria-labelledby="galleryTitle">
+          <div class="flex items-center justify-between px-1 mb-2.5">
+            <h2 id="galleryTitle" class="font-hand text-lg font-bold text-stone-700">우리의 소중한 순간들 📷</h2>
+            <span class="text-[10px] text-rose-500">옆으로 넘겨보세요</span>
+          </div>
+          <div class="swiper party-gallery" role="region" aria-label="생일 추억 사진 캐러셀" aria-roledescription="캐러셀">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide"><img src="./img/img01.jpg" alt="둥이의 생일 추억 사진 1" loading="eager" decoding="async"></div>
+              <div class="swiper-slide"><img src="./img/img02.jpg" alt="둥이의 생일 추억 사진 2" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="./img/img03.jpg" alt="둥이의 생일 추억 사진 3" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="./img/img04.jpg" alt="둥이의 생일 추억 사진 4" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="./img/img06.jpg" alt="둥이의 생일 추억 사진 6" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="./img/img07.jpg" alt="둥이의 생일 추억 사진 7" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="./img/img08.jpg" alt="둥이의 생일 추억 사진 8" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="./img/img09.jpg" alt="둥이의 생일 추억 사진 9" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="./img/img10.jpg" alt="둥이의 생일 추억 사진 10" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="./img/img11.jpg" alt="둥이의 생일 추억 사진 11" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="./img/img12.jpg" alt="둥이의 생일 추억 사진 12" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="./img/img13.jpg" alt="둥이의 생일 추억 사진 13" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="./img/img14.jpg" alt="둥이의 생일 추억 사진 14" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="./img/img15.jpg" alt="둥이의 생일 추억 사진 15" loading="lazy" decoding="async"></div>
+                <div class="swiper-slide"><img src="./img/img16.jpg" alt="둥이의 생일 추억 사진 16" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="./img/img17.jpg" alt="둥이의 생일 추억 사진 17" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="./img/img18.jpg" alt="둥이의 생일 추억 사진 18" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="./img/img19.jpg" alt="둥이의 생일 추억 사진 19" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="./img/img20.jpg" alt="둥이의 생일 추억 사진 20" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="./img/img21.jpg" alt="둥이의 생일 추억 사진 21" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="./img/img22.jpg" alt="둥이의 생일 추억 사진 22" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="./img/img23.jpg" alt="둥이의 생일 추억 사진 23" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="./img/img24.jpg" alt="둥이의 생일 추억 사진 24" loading="lazy" decoding="async"></div>
+              <div class="swiper-slide"><img src="./img/img25.jpg" alt="둥이의 생일 추억 사진 25" loading="lazy" decoding="async"></div>
+            </div>
+            <button type="button" class="swiper-button-prev" aria-label="이전 사진"></button>
+            <button type="button" class="swiper-button-next" aria-label="다음 사진"></button>
+            <div class="swiper-pagination"></div>
+          </div>
+        </section>
+        <!-- 주접 & 달콤한 멘트 섹션 -->
+        <div class="mt-4 p-3.5 rounded-2xl bg-white/70 border border-pink-200 space-y-2 text-stone-700">
+          <div class="flex items-start gap-2">
+            <span class="text-xl">🐰</span>
+            <p class="text-xs sm:text-sm font-sans leading-relaxed">
+              뭉이도 한눈에 반해 귀 쫑긋 세운 <strong class="text-rose-500 font-bold">둥이 생일파티!</strong>
+            </p>
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="text-xl">✨</span>
+            <p class="text-xs sm:text-sm font-sans leading-relaxed">
+              1차의 열기를 이어받아 더 길고 진하게! <br/> 낮부터 밤까지 행복만 가득 충전하는 날 💖
+            </p>
+          </div>
+        </div>
+
+        <!-- 하트/별 폭죽 터뜨리기 터치 버튼 -->
+        <button onclick="triggerPastelConfetti(event)" class="w-full mt-3 py-2 rounded-xl bg-gradient-to-r from-pink-100 via-rose-100 to-amber-100 border border-pink-200 text-xs font-bold text-rose-600 flex items-center justify-center gap-1.5 hover:shadow transition active:scale-98">
+          <span>🌸</span> 터치해서 보들보들 꽃잎 폭죽 날리기 <span>🎉</span>
+        </button>
+      </div>
+
+      <!-- 파티 일정 & 1부/2부 타임테이블 카드 -->
+      <section class="space-y-2.5">
+        <div class="flex items-center justify-between px-2">
+          <h2 class="text-xs font-bold tracking-wider text-stone-500 uppercase flex items-center gap-1">
+            <span>📅</span> 파티 상세 일정표
+          </h2>
+          <span class="text-xs font-bold text-rose-500 bg-rose-50 px-2 py-0.5 rounded-full border border-rose-200">
+            D-DAY 10월 20일 (화) 12:00 시작
+          </span>
+        </div>
+
+        <!-- 1부 & 2부 타임라인 듀얼 카드 -->
+        <div class="grid grid-cols-1 gap-2.5">
+          
+          <!-- [1부] 낮 파티 -->
+          <div class="jelly-glass rounded-2xl p-3.5 border-l-4 border-l-amber-400 flex items-center justify-between hover:shadow-md transition">
+            <div class="flex items-center gap-3">
+              <div class="w-11 h-11 rounded-xl bg-amber-100 text-amber-700 flex flex-col items-center justify-center font-bold flex-shrink-0">
+                <span class="text-sm leading-none">1부</span>
+                <span class="text-[10px] text-amber-600 mt-0.5">DAY</span>
+              </div>
+              <div>
+                <div class="text-xs font-bold text-amber-800 flex items-center gap-1.5">
+                  <span>☕ 낮 파티 : 맛있는 점심 식사 & 커피 그리고 비밀스러운 미니 이벤트</span>
+                </div>
+                <div class="text-base font-extrabold text-stone-800">
+                  12:00 ~ 17:00
+                </div>
+                <p class="text-[11px] text-stone-500">냠냠 밥먹기 🍽️</p>
+              </div>
+            </div>
+            <span class="text-xs font-bold px-2 py-1 rounded-lg bg-amber-50 text-amber-700 border border-amber-200 whitespace-nowrap">
+              5시간 순삭
+            </span>
+          </div>
+
+          <!-- 브레이크/정비 안내 -->
+          <div class="text-center py-0.5">
+            <span class="text-[10px] font-hand text-stone-600 bg-white/70 px-3 py-1 rounded-full border border-pink-200">
+              ☕ 17:00 ~ 18:00 (숨고르기 & 2부 전열 정비 타임)
+            </span>
+          </div>
+
+          <!-- [2부] 밤 파티 -->
+          <div class="jelly-glass rounded-2xl p-3.5 border-l-4 border-l-rose-400 flex items-center justify-between hover:shadow-md transition">
+            <div class="flex items-center gap-3">
+              <div class="w-11 h-11 rounded-xl bg-pink-100 text-rose-600 flex flex-col items-center justify-center font-bold flex-shrink-0">
+                <span class="text-sm leading-none">2부</span>
+                <span class="text-[10px] text-rose-500 mt-0.5">NIGHT</span>
+              </div>
+              <div>
+                <div class="text-xs font-bold text-rose-600 flex items-center gap-1.5">
+                  <span>🌙 밤 파티 : 본격 파티 & 축하의 밤</span>
+                </div>
+                <div class="text-base font-extrabold text-stone-800">
+                  18:00 ~ 22:00
+                </div>
+                <p class="text-[11px] text-stone-500">맛있는 음식, 끝없는 수다와 깊어지는 축하의 밤 🍷</p>
+              </div>
+            </div>
+            <span class="text-xs font-bold px-2 py-1 rounded-lg bg-pink-50 text-rose-600 border border-pink-200 whitespace-nowrap">
+              심야 질주
+            </span>
+          </div>
+        </div>
+
+        <!-- 드레스코드: 따뜻한 상의와 멋진 바지 -->
+        <div class="jelly-glass rounded-2xl p-4 border border-rose-300/80 bg-gradient-to-r from-rose-50/70 to-amber-50/70">
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 rounded-xl bg-rose-200/80 flex items-center justify-center text-xl flex-shrink-0">
+              🧣
+            </div>
+            <div class="flex-1">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-rose-600 tracking-wide">DRESS CODE</span>
+                <span class="text-[10px] px-2 py-0.5 rounded-full bg-white text-stone-700 font-bold border border-rose-200">
+                  가을 멋쟁이 공식룩
+                </span>
+              </div>
+              <h3 class="text-base font-black text-stone-800 mt-0.5">
+                "따뜻한 상의와 멋진 바지"
+              </h3>
+              <p class="text-xs text-stone-600 mt-1 leading-relaxed">
+                10월 가을바람에 감기 걸리지 않는 <strong>포근하고 따뜻한 니트/상의</strong>에, 본인 기준 <strong>가장 핏이 살아있는 멋진 바지</strong>를 장착하고 와주세요! 👖✨
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 장소 안내 (토끼 굴 접선 암호 인터랙션) -->
+        <div class="jelly-glass rounded-2xl p-3.5 border border-amber-200">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+              <span class="text-2xl">🏡</span>
+              <div>
+                <div class="text-[11px] text-stone-500 font-semibold">비밀 접선 장소</div>
+                <div class="text-sm font-bold text-stone-800" id="bunnyLocationText">
+                  비밀의 토끼 굴 (1급 보안 구역)
+                </div>
+              </div>
+            </div>
+            <button onclick="revealBunnyPlace()" id="locBtn" class="text-xs px-3 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-stone-900 font-bold shadow-sm active:scale-95 transition">
+              🥕 당근으로 열기
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 참석 응답 (RSVP) 카드 -->
+      <section class="jelly-glass rounded-3xl p-5 border-2 border-pink-300 text-center space-y-3.5 shadow-plush">
+        <div>
+          <span class="inline-block text-[11px] font-bold text-rose-500 bg-rose-100 px-3 py-1 rounded-full mb-1.5">
+            🐰 둥이 초대 필수 응답
+          </span>
+          <h3 class="font-cute text-2xl text-stone-800">
+            "불참이란 단어는 토끼 사전에 없습니다"
+          </h3>
+          <p class="text-xs text-stone-600">
+            따뜻한 옷 챙겨 입고 몸만 오시면 됩니다. 호양이와 예찌니, 푸, 뭉이, 까꿍이가 두 귀를 활짝 열고 기다립니다 💕
+          </p>
+        </div>
+
+        <!-- 참석 선택 버튼 2종 -->
+        <div class="space-y-2">
+          <button onclick="handleRsvp('1부 + 2부 ALL 풀코스')" class="w-full py-3.5 px-4 rounded-2xl font-bold text-white bg-gradient-to-r from-rose-400 to-pink-500 hover:from-rose-500 hover:to-pink-600 shadow-md shadow-pink-300 active:scale-98 transition flex items-center justify-center gap-2">
+            <span>👑</span> 1부 + 2부 전 일정 풀코스 참석! <span>🐰</span>
+          </button>
+
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="handleRsvp('1부 낮 파티 (12~17시)')" class="py-2.5 px-3 rounded-xl font-bold text-amber-800 bg-amber-100/80 hover:bg-amber-200 border border-amber-300 text-xs active:scale-98 transition flex items-center justify-center gap-1">
+              <span>☕</span> 1부 낮 파티 출격
+            </button>
+            <button onclick="handleRsvp('2부 밤 파티 (18~22시)')" class="py-2.5 px-3 rounded-xl font-bold text-rose-700 bg-pink-100/80 hover:bg-pink-200 border border-pink-300 text-xs active:scale-98 transition flex items-center justify-center gap-1">
+              <span>🌙</span> 2부 밤 파티 출격
+            </button>
+          </div>
+
+          <!-- 도망치는 불참 버튼 -->
+          <div class="pt-1">
+            <button id="runawayBtn" 
+                    onmouseover="dodgeBunny(this)" 
+                    onclick="handleNoAttendance(this)" 
+                    class="text-xs text-stone-400 hover:text-rose-500 underline transition duration-200 py-1 px-3">
+              (혹시... 불참을 고민 중이신가요?)
+            </button>
+          </div>
+        </div>
+
+        <!-- 확정 멤버 명단 -->
+        <div class="pt-2 border-t border-pink-200/80 text-xs text-stone-500 flex items-center justify-between">
+          <span>함께하는 VIP 패밀리</span>
+          <span class="font-bold text-rose-500">둥이, 호양, 예찌니, 푸, 뭉이, 까꿍이 🐰</span>
+        </div>
+      </section>
+
+      <!-- 공유 및 편의 액션 버튼 -->
+      <footer class="space-y-2.5 pb-4">
+        <div class="grid grid-cols-2 gap-2.5">
+          <button onclick="copyInvitationLink()" class="py-3 px-3 rounded-2xl bg-white hover:bg-pink-50 border border-pink-200 text-xs font-bold text-stone-700 flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition">
+            <span class="text-base">🔗</span> 초대장 링크 복사
+          </button>
+          <button onclick="openCalendarModal()" class="py-3 px-3 rounded-2xl bg-white hover:bg-pink-50 border border-pink-200 text-xs font-bold text-stone-700 flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition">
+            <span class="text-base">📅</span> 10/20 일정 저장
+          </button>
+        </div>
+
+        <p class="text-[11px] text-center text-stone-400 font-hand text-sm">
+          주최: 깡총토끼단 🌸 사랑과 정성으로 맞이합니다
+        </p>
+      </footer>
+    </main>
+  </div>
+
+  <!-- 공통 커스텀 팝업 모달 -->
+  <div id="jellyModal" class="fixed inset-0 z-50 bg-stone-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white/95 rounded-3xl p-6 border-2 border-pink-300 shadow-2xl max-w-sm w-full text-center transform scale-95 transition-all duration-300" id="jellyModalCard">
+      <div id="modalEmoji" class="text-5xl mb-2 animate-bounce">🐰</div>
+      <h3 id="modalTitle" class="font-cute text-2xl text-stone-800 mb-2">알림</h3>
+      <p id="modalMessage" class="text-xs sm:text-sm text-stone-600 whitespace-pre-line leading-relaxed mb-5"></p>
+      <button onclick="closeJellyModal()" class="w-full py-3 rounded-xl bg-gradient-to-r from-rose-400 to-pink-500 text-white font-bold text-sm shadow-md shadow-pink-300 hover:opacity-90 active:scale-95 transition">
+        토끼 도장 쾅! 완료 🐾
+      </button>
+    </div>
+  </div>
+
+  <!-- 토스트 알림창 -->
+  <div id="toast" class="fixed bottom-6 z-50 px-5 py-2.5 rounded-2xl bg-stone-800 text-white font-bold text-xs shadow-xl transition-all duration-300 opacity-0 pointer-events-none translate-y-3">
+    ✨ 링크가 복사되었습니다!
+  </div>
+
+  <script>
+    // 1. 페이지 로드 시 몽글몽글 파스텔 젤리캣 축하 폭죽
+    window.addEventListener('load', () => {
+      const video = document.getElementById('partyVideo');
+      // 브라우저 정책에 맞춰 재생 시도
+      if (video) {
+        video.muted = true;
+        video.play().catch(e => console.log('Autoplay prevented, requires user touch'));
+      }
+      triggerPastelConfetti();
+    });
+
+    // 2. 파스텔 톤 젤리캣 꽃가루 폭죽
+    function triggerPastelConfetti(event) {
+      const colors = ['#ffccd5', '#ffe5ec', '#ffd166', '#e8dff5', '#ff9aa2', '#ffffff'];
+      confetti({
+        particleCount: 50,
+        spread: 60,
+        origin: { y: 0.65 },
+        colors: colors,
+        shapes: ['circle']
+      });
+    }
+
+    // 3. 비디오 컨트롤러 (재생/정지 토글)
+    function toggleVideoPlay() {
+      const video = document.getElementById('partyVideo');
+      const icon = document.getElementById('playIcon');
+      if (video.paused) {
+        video.play();
+        icon.textContent = '⏸️';
+      } else {
+        video.pause();
+        icon.textContent = '▶️';
+      }
+    }
+
+    // 4. 비디오 소리 (Mute / Unmute 토글)
+    function toggleAudio() {
+      const video = document.getElementById('partyVideo');
+      const icon = document.getElementById('audioIcon');
+      const text = document.getElementById('audioText');
+
+      if (video.muted) {
+        video.muted = false;
+        icon.textContent = '🔊';
+        text.textContent = '소리 끄기';
+        showToast("🔊 동영상 소리가 켜졌습니다!");
+      } else {
+        video.muted = true;
+        icon.textContent = '🔇';
+        text.textContent = '소리 켜기';
+        showToast("🔇 동영상 소리가 음소거되었습니다.");
+      }
+    }
+
+    // 5. 사용자가 직접 자기 폰/PC의 영상으로 교체하는 기능
+    function handleUserVideoUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const fileURL = URL.createObjectURL(file);
+        const video = document.getElementById('partyVideo');
+        video.src = fileURL;
+        video.play();
+        document.getElementById('playIcon').textContent = '⏸️';
+        showToast("🎬 예찌니와 둥이의 영상으로 변경되었습니다!");
+      }
+    }
+
+    // 6. 장소 당근 암호 해독 인터랙션
+    let isPlaceOpen = false;
+    function revealBunnyPlace() {
+      const text = document.getElementById('bunnyLocationText');
+      const btn = document.getElementById('locBtn');
+
+      if (!isPlaceOpen) {
+        text.innerHTML = "🥕 예찌니의 포근한 아지트 (개별 비밀 메시지 전송 완료)";
+        text.classList.add('text-rose-600');
+        btn.textContent = "🔒 다시 닫기";
+        isPlaceOpen = true;
+
+        openModal(
+          "🐰 당근 암호 해독 성공!",
+          "따뜻한 온기와 달콤한 케이크가 기다리는 '비밀 토끼 굴' 좌표가 등록되었습니다!\n\n접선 시간: 10월 20일 12:00 정각\n복장: 따뜻한 상의 & 멋진 바지 잊지 마세요!"
+        );
+      } else {
+        text.textContent = "비밀의 토끼 굴 (1급 보안 구역)";
+        text.classList.remove('text-rose-600');
+        btn.textContent = "🥕 당근으로 열기";
+        isPlaceOpen = false;
+      }
+    }
+
+    // 7. 불참 버튼 도망치기 (위트 인터랙션)
+    let dodgeTry = 0;
+    function dodgeBunny(btn) {
+      if (dodgeTry < 3) {
+        const x = (Math.random() - 0.5) * 140;
+        const y = (Math.random() - 0.5) * 50;
+        btn.style.transform = `translate(${x}px, ${y}px)`;
+        dodgeTry++;
+      } else {
+        btn.textContent = "토끼가 불참 버튼을 먹어버렸습니다 🐰🥕";
+        btn.disabled = true;
+        btn.classList.add('opacity-40');
+      }
+    }
+
+    function handleNoAttendance(btn) {
+      openModal(
+        "🐰 젤리캣 토끼의 눈물 경보",
+        "둥이와 예찌니가 이렇게 기다리는데 불참이라니요!\n\n따뜻한 상의와 멋진 바지만 입고 몸만 오시면 됩니다. 어서 [참석]을 눌러주세요 💕"
+      );
+      dodgeBunny(btn);
+    }
+
+    // 8. 참석 확정 처리
+    function handleRsvp(partyType) {
+      confetti({
+        particleCount: 120,
+        spread: 80,
+        origin: { y: 0.6 },
+        colors: ['#ffccd5', '#ffd166', '#fb6f92', '#ffffff']
+      });
+
+      openModal(
+        "🎉 참석 확정! 토끼 도장 쾅!",
+        `[${partyType}] 신청 완료!\n\n둥이의 최애 젤리캣 토끼가 두 귀를 활짝 열고 격하게 환영합니다.\n\n🧣 드레스코드: 따뜻한 상의 + 멋진 바지\n⏰ 10월 20일 12:00에 뵙겠습니다!`
+      );
+    }
+
+    // 9. 캘린더 안내 모달
+    function openCalendarModal() {
+      openModal(
+        "📅 10월 20일 생일파티 일정 안내",
+        "• 일시: 10월 20일 (화)\n• 1부: 12:00 ~ 17:00 (티타임 & 케이크)\n• 2부: 18:00 ~ 22:00 (본격 파티의 밤)\n• 드레스코드: 따뜻한 상의와 멋진 바지 🧣👖\n\n취소 불가능한 행복 필수 일정입니다!"
+      );
+    }
+
+    // 10. 모달 제어 시스템
+    function openModal(title, msg) {
+      const modal = document.getElementById('jellyModal');
+      const card = document.getElementById('jellyModalCard');
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalMessage').textContent = msg;
+
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        card.classList.remove('scale-95');
+        card.classList.add('scale-100');
+      }, 10);
+    }
+
+    function closeJellyModal() {
+      const modal = document.getElementById('jellyModal');
+      const card = document.getElementById('jellyModalCard');
+      card.classList.remove('scale-100');
+      card.classList.add('scale-95');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 150);
+    }
+
+    // 11. 링크 복사 (execCommand 안전 지원)
+    function copyInvitationLink() {
+      const dummy = document.createElement('input');
+      dummy.value = window.location.href;
+      document.body.appendChild(dummy);
+      dummy.select();
+      try {
+        document.execCommand('copy');
+        showToast("🐰 2차 파티 초대장 링크가 복사되었습니다!");
+      } catch (e) {
+        showToast("링크 복사에 실패했습니다.");
+      }
+      document.body.removeChild(dummy);
+    }
+
+    // 12. 토스트 헬퍼
+    function showToast(text) {
+      const toast = document.getElementById('toast');
+      toast.textContent = text;
+      toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-3');
+      toast.classList.add('opacity-100', 'translate-y-0');
+
+      setTimeout(() => {
+        toast.classList.remove('opacity-100', 'translate-y-0');
+        toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-3');
+      }, 2300);
+    }
+  </script>
+  <script>
+    if (typeof Swiper !== 'undefined') {
+      new Swiper('.party-gallery', {
+        loop: true,
+        spaceBetween: 12,
+        keyboard: { enabled: true, onlyInViewport: true },
+        navigation: {
+          nextEl: '.party-gallery .swiper-button-next',
+          prevEl: '.party-gallery .swiper-button-prev'
+        },
+        pagination: {
+          el: '.party-gallery .swiper-pagination',
+          type: 'fraction'
+        },
+        a11y: {
+          prevSlideMessage: '이전 사진',
+          nextSlideMessage: '다음 사진',
+          slideLabelMessage: '{{index}} / {{slidesLength}} 사진'
+        }
+      });
+    }
+  </script>
+</body>
+</html>
